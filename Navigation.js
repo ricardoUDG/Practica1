@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {Colors} from './colores.js';
 
-import NLogin from "./NLogin";
+import Login from "./Login";
 import Registro from './Registro';
 
-export default class NavPrueba extends Component {
+export default class Navigation extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -18,8 +19,16 @@ export default class NavPrueba extends Component {
     return (
         <NavigationContainer>
         <Stack.Navigator initialRouteName="login">
-          <Stack.Screen options={{headerShown: false}} name="login" component={NLogin} />
-          <Stack.Screen options={{headerShown: false}} name="registro" component={Registro} />
+          <Stack.Screen options={{headerShown: false}} name="login" component={Login} />
+          <Stack.Screen name="registro" 
+          component={Registro} 
+          options={{ 
+            title: 'Registro',
+            headerStyle: {
+              backgroundColor: Colors.primary_dark,
+            },
+            headerTintColor: Colors.primary_color_text,
+            }} />
         </Stack.Navigator>
       </NavigationContainer>
     );
