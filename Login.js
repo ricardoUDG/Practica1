@@ -2,21 +2,39 @@ import React, { Component } from 'react';
 import { View, Text, Image, TextInput, StyleSheet, Dimensions, ImageBackground, TouchableOpacity, Button } from 'react-native';
 import { NavigationContainer, NavigationContext } from '@react-navigation/native';
 import {Colors} from './colores.js';
+import {NetworkVars} from './AppConstants';
 
 export default class NLogin extends Component {
   static contextType = NavigationContext;
   constructor(props) {
     super(props);
     this.state = {
+      codigo:"",
+      password: "",
     };
   }
 
   render() {
     const navigation = this.context;
-    const login = () => {
+    const register = () => {
         console.log("Diste click");
         navigation.navigate('registro');
     }
+    const login = () => {
+      console.log("attempting connection");
+      var xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+            console.log("response: " + xhttp.responseText);
+            // Typical action to be performed when the document is ready:
+          }
+      };
+      xhttp.ontimeout = function() {
+        console.log("Fin de tiempo de request");
+      };
+      xhttp.open("GET", "https://gaboproginternet.000webhostapp.com/temporal.php?login="+this.state.codigo+"&password="+this.state.password, true);
+      xhttp.send();
+  }
 
     return (
       <View style={styles.container}>
@@ -25,14 +43,15 @@ export default class NLogin extends Component {
                 <View style={styles.logContainer}>
                   <TextInput
                       style={styles.inputLogin}
-                      placeholder="Correo Electronico"
+                      placeholder="Codigo de Estudiante"
+                      onChangeText={(codigo) => this.setState({codigo})}
                       placeholderTextColor={Colors.secondary_text}
                   />
-                  
                   <TextInput
                       style={styles.inputLogin}
                       placeholder="Contraseña"
                       secureTextEntry={true}
+                      onChangeText={(password) => this.setState({password})}
                       placeholderTextColor={Colors.secondary_text}
                   />
                   <TouchableOpacity >
@@ -40,8 +59,8 @@ export default class NLogin extends Component {
                   </TouchableOpacity>
                 </View>
                 <View style={styles.contBotones}>
-                    <TouchableOpacity style={styles.botonesLogin} onPress={login}><Text>Registrarse</Text></TouchableOpacity>
-                    <TouchableOpacity style={styles.botonesLogin}><Text>Entrar</Text></TouchableOpacity>
+                    <TouchableOpacity style={styles.botonesLogin} onPress={register}><Text>Registrarse</Text></TouchableOpacity>
+                    <TouchableOpacity style={styles.botonesLogin} onPress={login}><Text>Entrar</Text></TouchableOpacity>
                 </View>
                 
             </View>

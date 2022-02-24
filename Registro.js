@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, ScrollView } from 'react-native';
 import { NavigationContainer, NavigationContext } from '@react-navigation/native';
 import {Colors} from './colores.js';
 
@@ -16,7 +16,8 @@ export default class Registro extends Component {
       <View style={styles.container}>
         <Text style={styles.title}> Crear Cuenta </Text>
         <View style={styles.registroContainer}>
-          <View>
+          <ScrollView>
+            <View>
               <View style={styles.elementoContainer}>
                 <Text style={styles.label}>Nombre</Text>
                 <View style={styles.nombreContainer}>
@@ -49,10 +50,35 @@ export default class Registro extends Component {
                               placeholderTextColor={Colors.secondary_text}
                           />
               </View>
-          </View>
-          <View style={styles.botonContainer}>
-            <TouchableOpacity style={styles.botonRegistrar}><Text style={styles.botonTexto}>Registrarse</Text></TouchableOpacity>
-          </View>
+              <View style={styles.elementoContainer}>
+                <Text style={styles.label}>Centro</Text>
+                <TextInput
+                              style={styles.input}
+                              placeholder="Centro"
+                              placeholderTextColor={Colors.secondary_text}
+                          />
+              </View>
+              <View style={styles.elementoContainer}>
+                <Text style={styles.label}>Semestre</Text>
+                <TextInput
+                              style={styles.input}
+                              placeholder="Semestre"
+                              placeholderTextColor={Colors.secondary_text}
+                          />
+              </View>
+              <View style={styles.elementoContainer}>
+                <Text style={styles.label}>Codigo de Estudiante</Text>
+                <TextInput
+                              style={styles.input}
+                              placeholder="##########"
+                              placeholderTextColor={Colors.secondary_text}
+                          />
+              </View>
+            </View>
+            <View style={styles.botonContainer}>
+              <TouchableOpacity style={styles.botonRegistrar}><Text style={styles.botonTexto}>Registrarse</Text></TouchableOpacity>
+            </View>
+          </ScrollView>
         </View>
       </View>
     );
@@ -112,6 +138,7 @@ const styles = StyleSheet.create({
       fontWeight: "bold",
     },
   botonContainer:{
+    marginTop:8,
     paddingHorizontal: 30,
     paddingBottom: 30,
     alignItems: "flex-end"
