@@ -6,6 +6,7 @@ import {Colors} from './colores.js';
 
 import Login from "./Login";
 import Registro from './Registro';
+import Home from './Home';
 
 export default class Navigation extends Component {
   constructor(props) {
@@ -20,6 +21,7 @@ export default class Navigation extends Component {
         <NavigationContainer>
         <Stack.Navigator initialRouteName="login">
           <Stack.Screen options={{headerShown: false}} name="login" component={Login} />
+          <Stack.Screen options={{headerShown: false}} name="home" component={Home} />
           <Stack.Screen name="registro" 
           component={Registro} 
           options={{ 
