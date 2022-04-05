@@ -3,6 +3,7 @@ import { View, Text, Image, TextInput, StyleSheet, Dimensions, ImageBackground, 
 import { NavigationContainer, NavigationContext } from '@react-navigation/native';
 import {Colors} from './colores.js';
 import {NetworkVars} from './AppConstants';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default class Login extends Component {
   static contextType = NavigationContext;
@@ -24,29 +25,47 @@ export default class Login extends Component {
     }
     const login = () => {
 
+      if(this.state.password.length <= 0){
+        Alert.alert("¡Error!", "No se introdujo contraseña", [{text:"Ok",onPress:()=>console.log("code error")}]);
+        return;
+      }
+      if(this.state.codigo.length > 10 || this.state.codigo.length <= 0){
+        Alert.alert("¡Error!", "Codigo de Estudiante Invalido.", [{text:"Ok",onPress:()=>console.log("code error")}]);
+        return;
+      }
+      
       this.setState({isLoading:true});
 
       console.log("attempting connection");
       var xhttp = new XMLHttpRequest();
+
       xhttp.onreadystatechange = ()=> {
+          
           if (xhttp.readyState == 4 && xhttp.status == 200) {
-            // Typical action to be performed when the document is ready:
-            console.log("response: " + xhttp.responseText);
+            console.log("response: " + xhttp.responseText + " estado " + xhttp.status + " " + xhttp.readyState);
             if(xhttp.responseText=="1"){
               console.log("Usuario Autenticado");
+
+              const jsonVal = JSON.stringify(this.state.codigo);
+              AsyncStorage.setItem('DatosUsuario', jsonVal);
+
               navigation.navigate('home');
             }
             if(xhttp.responseText=="2"){
               Alert.alert("¡Error!", "Contraseña incorrecta", [{text:"Ok",onPress:()=>console.log("pass error")}]);
             }
             if(xhttp.responseText=="3"){
-              Alert.alert("¡Error!", "No existe usuario", [{text:"Ok",onPress:()=>console.log("pass error")}]);
+              Alert.alert("¡Error!", "No existe usuario", [{text:"Ok",onPress:()=>console.log("user error")}]);
             }
+            this.setState({isLoading:false});
           }
-          this.setState({isLoading:false});
       };
       xhttp.ontimeout = () => {
-        Alert.alert("¡Error!", "Sin respuesta del servidor.", [{text:"Ok",onPress:()=>console.log("code error")}]);
+        Alert.alert("¡Error!", "Sin respuesta del servidor.", [{text:"Ok",onPress:()=>console.log("timeout")}]);
+        this.setState({isLoading:false});
+      };
+      xhttp.onerror = () => {
+        Alert.alert("¡Error!", "Sin respuesta del servidor.", [{text:"Ok",onPress:()=>console.log("no response")}]);
         this.setState({isLoading:false});
       };
       xhttp.open("GET", "https://gaboproginternet.000webhostapp.com/login.php?codigo="+this.state.codigo+"&password="+this.state.password, true);
@@ -82,10 +101,10 @@ export default class Login extends Component {
                 </View>
                 
             </View>
-            {this.state.isLoading && <View style={styles.loading}>
+        </ImageBackground>
+        {this.state.isLoading && <View style={styles.loading}>
           <ActivityIndicator color={"#fff"} />
           </View>}
-        </ImageBackground>
       </View>
     );
   }

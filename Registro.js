@@ -68,6 +68,10 @@ export default class Registro extends Component {
         Alert.alert("¡Error!", "Sin respuesta del servidor.", [{text:"Ok",onPress:()=>console.log("code error")}]);
         this.setState({isLoading:false});
       };
+      xhttp.onerror = () => {
+        Alert.alert("¡Error!", "Sin respuesta del servidor.", [{text:"Ok",onPress:()=>console.log("code error")}]);
+        this.setState({isLoading:false});
+      };
       xhttp.open("GET", "https://gaboproginternet.000webhostapp.com/registro.php?nombre="+this.state.nombre + " " + this.state.apellido+"&codigo="+this.state.codigo + "&password=" + this.state.password + "&centro=" + this.state.centro + "&semestre="+this.state.semestre + "&correo=" + this.state.email + "&telefono=" + this.state.telefono, true);
       xhttp.send();
   }
